@@ -1,0 +1,10 @@
+<form name='addTache' method="POST" action="addTache">
+        
+        Titre: <input type="text" name="titre_tache"><br/>
+        Description: <textarea name="description_tache"></textarea><br/>
+        Début: <input type="date" name="date_debut" value="<?php $date = new Date("now"); ?>"><br/>
+        Fin: <input type="date" name="date_fin" value="<?php $date = new Date("now"); ?>"><br/>
+        <input type="submit" value="Valider" /><br/>
+    
+</form>
+

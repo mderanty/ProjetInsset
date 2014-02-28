@@ -1,0 +1,19 @@
+<div class="modal-dialog">
+    <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" onClick="window.location.reload()" aria-hidden="true">&times;</button>
+            <h4 class="modal-title">Supprimer <?php echo $tache->getTitre_tache(); ?> </h4>                
+        </div>
+
+        <div class="modal-body">                                  
+            <p class="col-sm-10">Voulez vraiment supprimer la tache: <?php echo $tache->getTitre_tache(); ?> appartenant au projet <?php echo $projet->getTitre_projet() ?>?</p> <br/>
+            <form method="post" action="<?php echo $this->url('projet/deletetache', array('action' => 'voirProjet', 'idprojet' => $projet->getId_projet(), 'actiontache' => 'delete-tache', 'idtache' => $tache->getId_tache(), true)); ?>">
+                <div class="modal-footer">
+                    <input type="submit" class="btn btn-primary" value="Valider"/>
+                    <button type="button" class="btn btn-default" onClick="window.location.reload()" data-dismiss="modal">Fermer</button>                
+                </div>
+            </form>
+
+        </div>
+    </div><!-- /.modal-content -->
+</div><!-- /.modal-dialog -->

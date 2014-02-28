@@ -1,0 +1,360 @@
+<?php
+$title = $projet->getTitre_projet();
+
+$this->headTitle($title);
+?>
+<h1><?php echo $this->escapeHtml($title); ?></h1>
+<a href="<?php echo $this->url('projet', array('action' => 'editProjet', 'idprojet' => $projet->getId_projet())); ?>">Edit</a> |
+<a href="<?php echo $this->url('projet', array('action' => 'deleteProjet', 'idprojet' => $projet->getId_projet())); ?>">Delete</a>
+<hr/>
+<table>
+    <thead>
+        <tr>
+            <th>Débuté le:</th>
+            <td><?php echo $projet->getDate_debut_projet()->format('d-m-Y'); ?></td>
+        </tr>        
+        <tr>
+            <th>Fin prévue le:</th>            
+            <td><?php echo $projet->getDate_fin_projet()->format('d-m-Y'); ?></td>
+        </tr>
+</table>
+<hr/>
+<table>    
+    <tr>
+        <th>Description</th>
+        <td><?php echo $projet->getDescription_projet(); ?></td>
+    </tr>                          
+</table>
+<hr/>
+<h2>Tâches:</h2>
+
+
+<?php if (isset($taches)) : ?>
+    <table>
+        <thead>
+            <tr>                        
+                <th>Titre</th>
+                <th>Description</th>
+                <th>Début</th>
+                <th>Fin</th>                
+            </tr>
+        </thead>
+        <?php
+        foreach ($taches as $tache):
+            ?>
+            <tbody>
+                <tr>                                             
+                    <td><?php echo $tache->getTitre_tache(); ?></td>
+                    <td><?php echo $tache->getDescription_tache(); ?></td>
+                    <td><?php echo $tache->getDate_debut()->format('d-m-Y'); ?></td>
+                    <td><?php echo $tache->getDate_fin()->format('d-m-Y'); ?></td>
+                    <td>
+                        <a class="btn btn-primary" data-toggle="modal" href="<?php echo $this->url('projet/edittache', array('action' => 'voirProjet', 'idprojet' => $projet->getId_projet(), 'actiontache' => 'edit-tache', 'idtache' => $tache->getId_tache(), true)); ?>" data-target="#infos">Edit</a>|                        
+                        <a class="btn btn-primary" data-toggle="modal" href="<?php echo $this->url('projet/deletetache', array('action' => 'voirProjet', 'idprojet' => $projet->getId_projet(), 'actiontache' => 'delete-tache', 'idtache' => $tache->getId_tache(), true)); ?>" data-target="#infos">Delete</a>                        
+
+
+                    </td>
+                </tr>
+            </tbody>
+        <?php endforeach; ?>
+    </table>
+<?php endif; ?>
+
+<!--<script type="text/javascript">
+    function addField() {
+        try {
+            var div = document.createElement('div');
+            var idProjet = document.createElement('input');
+            var titre = document.createElement('input');
+            var description = document.createElement('textarea');
+            var debut = document.createElement('input');
+            var fin = document.createElement('input');
+            var sep = document.createElement('hr');
+
+            idProjet.setAttribute('type', 'HIDDEN');
+            idProjet.setAttribute('name', 'id_projet');
+            idProjet.setAttribute('value', '<?php echo $projet->getId_projet() ?>');
+            idProjet.appendChild(document.createTextNode(''));
+            div.appendChild(idProjet);
+
+            titre.setAttribute('type', 'text');
+            titre.setAttribute('name', 'titre_tache[]');
+            titre.setAttribute('value', '');
+            titre.appendChild(document.createTextNode(''));
+            div.appendChild(document.createTextNode('Titre: '));
+            div.appendChild(titre);
+
+            description.setAttribute('name', 'description_tache[]');
+            description.setAttribute('value', '');
+            description.appendChild(document.createTextNode(''));
+            div.appendChild(document.createTextNode('Description: '));
+            div.appendChild(description);
+
+            debut.setAttribute('type', 'date');
+            debut.setAttribute('name', 'date_debut[]');
+            debut.setAttribute('value', '');
+            debut.appendChild(document.createTextNode(''));
+            div.appendChild(document.createTextNode('Débuté le: '));
+            div.appendChild(debut);
+
+            fin.setAttribute('type', 'date');
+            fin.setAttribute('name', 'date_fin[]');
+            fin.setAttribute('value', '');
+            fin.appendChild(document.createTextNode(''));
+            div.appendChild(document.createTextNode('Fini pour: '));
+            div.appendChild(fin);
+
+            div.appendChild(sep);
+            document.getElementById('Tache').appendChild(div);
+        } catch (e) {
+            alert(e);
+        }
+    }
+</script>-->
+<a data-toggle="modal" href="#addTacheModal" class="btn btn-primary btn-sm">Ajouter une tache</a>
+
+<div class="modal " id="addTacheModal" tabindex="-1" role="dialog" aria-labelledby="addTachModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">Ajouter une tache</h4>
+            </div>
+            <div class="modal-body">
+                <form name='addTache' method="POST" action="<?php echo $this->url('projet/addtache', array('action' => 'voirProjet', 'idprojet' => $projet->getId_projet(), 'actiontache' => 'AddTache', true)); ?>" role="form" class="form-horizontal">                    
+                        <input type="hidden" name="id_projet" value="<?php echo $projet->getId_projet() ?>">
+                         
+                        <div class="form-group">
+                            <label for="titre_tache" class="col-sm-2">Titre: </label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" name="titre_tache">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="description_tache" class="col-sm-2">Description:</label>
+                            <div class="col-sm-10">
+                                <textarea name="description_tache" class="form-control"></textarea>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="date_debut" class="col-sm-2">Début:</label>
+                            <div class="col-sm-10">
+                                <input type="date" name="date_debut" class="form-control" value="<?php $date = new DateTime("now"); ?>">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="date_fin" class="col-sm-2">Fin: </label>
+                            <div class="col-sm-10">
+                                <input type="date" name="date_fin" class="form-control" value="<?php $date = new DateTime("now"); ?>">
+                            </div>
+                        </div>
+                        
+                        <div class="modal-footer">                            
+                            <input type="submit" class="btn btn-primary" value="add tache"/>
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        </div>                    
+                </form>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<div id="infos" class="modal fade" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" onClick="window.location.reload()" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">Chargement...</h4>                
+            </div>
+            <div class="modal-body">
+                <style>
+                    #followingBallsG{
+                        position:relative;
+                        width:256px;
+                        height:20px;
+                    }
+
+                    .followingBallsG{
+                        background-color:#29BCCF;
+                        position:absolute;
+                        top:0;
+                        left:0;
+                        width:20px;
+                        height:20px;
+                        -moz-border-radius:10px;
+                        -moz-animation-name:bounce_followingBallsG;
+                        -moz-animation-duration:2.6s;
+                        -moz-animation-iteration-count:infinite;
+                        -moz-animation-direction:linear;
+                        -webkit-border-radius:10px;
+                        -webkit-animation-name:bounce_followingBallsG;
+                        -webkit-animation-duration:2.6s;
+                        -webkit-animation-iteration-count:infinite;
+                        -webkit-animation-direction:linear;
+                        -ms-border-radius:10px;
+                        -ms-animation-name:bounce_followingBallsG;
+                        -ms-animation-duration:2.6s;
+                        -ms-animation-iteration-count:infinite;
+                        -ms-animation-direction:linear;
+                        -o-border-radius:10px;
+                        -o-animation-name:bounce_followingBallsG;
+                        -o-animation-duration:2.6s;
+                        -o-animation-iteration-count:infinite;
+                        -o-animation-direction:linear;
+                        border-radius:10px;
+                        animation-name:bounce_followingBallsG;
+                        animation-duration:2.6s;
+                        animation-iteration-count:infinite;
+                        animation-direction:linear;
+                    }
+
+                    #followingBallsG_1{
+                        -moz-animation-delay:0s;
+                    }
+
+                    #followingBallsG_1{
+                        -webkit-animation-delay:0s;
+                    }
+
+                    #followingBallsG_1{
+                        -ms-animation-delay:0s;
+                    }
+
+                    #followingBallsG_1{
+                        -o-animation-delay:0s;
+                    }
+
+                    #followingBallsG_1{
+                        animation-delay:0s;
+                    }
+
+                    #followingBallsG_2{
+                        -moz-animation-delay:0.26s;
+                        -webkit-animation-delay:0.26s;
+                        -ms-animation-delay:0.26s;
+                        -o-animation-delay:0.26s;
+                        animation-delay:0.26s;
+                    }
+
+                    #followingBallsG_3{
+                        -moz-animation-delay:0.52s;
+                        -webkit-animation-delay:0.52s;
+                        -ms-animation-delay:0.52s;
+                        -o-animation-delay:0.52s;
+                        animation-delay:0.52s;
+                    }
+
+                    #followingBallsG_4{
+                        -moz-animation-delay:0.78s;
+                        -webkit-animation-delay:0.78s;
+                        -ms-animation-delay:0.78s;
+                        -o-animation-delay:0.78s;
+                        animation-delay:0.78s;
+                    }
+
+                    @-moz-keyframes bounce_followingBallsG{
+                        0%{
+                        left:0px;
+                        background-color:#29BCCF;
+                    }
+
+                    50%{
+                        left:236px;
+                        background-color:#FFFFFF;
+                    }
+
+                    100%{
+                        left:0px;
+                        background-color:#29BCCF;
+                    }
+
+                    }
+
+                    @-webkit-keyframes bounce_followingBallsG{
+                        0%{
+                        left:0px;
+                        background-color:#29BCCF;
+                    }
+
+                    50%{
+                        left:236px;
+                        background-color:#FFFFFF;
+                    }
+
+                    100%{
+                        left:0px;
+                        background-color:#29BCCF;
+                    }
+
+                    }
+
+                    @-ms-keyframes bounce_followingBallsG{
+                        0%{
+                        left:0px;
+                        background-color:#29BCCF;
+                    }
+
+                    50%{
+                        left:236px;
+                        background-color:#FFFFFF;
+                    }
+
+                    100%{
+                        left:0px;
+                        background-color:#29BCCF;
+                    }
+
+                    }
+
+                    @-o-keyframes bounce_followingBallsG{
+                        0%{
+                        left:0px;
+                        background-color:#29BCCF;
+                    }
+
+                    50%{
+                        left:236px;
+                        background-color:#FFFFFF;
+                    }
+
+                    100%{
+                        left:0px;
+                        background-color:#29BCCF;
+                    }
+
+                    }
+
+                    @keyframes bounce_followingBallsG{
+                        0%{
+                        left:0px;
+                        background-color:#29BCCF;
+                    }
+
+                    50%{
+                        left:236px;
+                        background-color:#FFFFFF;
+                    }
+
+                    100%{
+                        left:0px;
+                        background-color:#29BCCF;
+                    }
+
+                    }
+
+                </style>
+                <div id="followingBallsG">
+                    <div id="followingBallsG_1" class="followingBallsG">
+                    </div>
+                    <div id="followingBallsG_2" class="followingBallsG">
+                    </div>
+                    <div id="followingBallsG_3" class="followingBallsG">
+                    </div>
+                    <div id="followingBallsG_4" class="followingBallsG">
+                    </div>
+                </div>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div>
+

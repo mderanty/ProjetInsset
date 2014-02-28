@@ -1,0 +1,16 @@
+<?php
+
+$title = 'Add new User';
+
+?>
+<h1><?php echo $this->escapeHtml($title); ?></h1>
+<form method="post">
+    Nom: <input type="text" name="nom_utilisateur"><br>
+    Prenom: <input type="text" name="prenom_utilisateur"><br>
+    Adresse Mail: <input type="text" name="adresse_utilisateur"><br>
+    date: <input type="date" name="date_inscription" value="<?php echo date('Y-m-d') ?>"<br>
+    idrang: <input type="text" name="id_rang"><br>
+    
+
+    <input type="submit" value="Submit">
+</form>

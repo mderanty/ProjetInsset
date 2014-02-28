@@ -1,0 +1,43 @@
+<div>
+    <div>
+        <div>
+            <div>
+                <h3>Utilisateurs</h3>
+            </div>
+            <div>
+                <a href="<?php echo $this->url('utilisateur', array('action'=>'add-user'));?>">Add User</a>
+                <?php
+                $date=date("d-m-Y");
+                echo $date;
+                ?>
+                <?php if (isset($utilisateurs)) : ?>
+                <table>
+                    <thead>
+                    <tr>
+                        <th>Id</th>
+                        <th>Nom</th>
+                        <th>Prenom</th>
+                        <th>Date</th>
+                        <th></th>
+                    </tr>
+                    </thead>
+                <?php foreach($utilisateurs as $utilisateur): ?>
+                    <tbody>
+                    <tr>
+                        <td><?php echo $utilisateur->getId_utilisateur(); ?></td>
+                        <td><?php echo $utilisateur->getNom_utilisateur(); ?></td>
+                        <td><?php echo $utilisateur->getPrenom_utilisateur(); ?></td>
+                        <td><?php echo $utilisateur->getDate_inscription(); ?></td>
+                        <td>
+                            <a href="<?php echo $this->url('utilisateur', array('action'=>'edit', 'id' => $utilisateur->getId_utilisateur()));?>">Edit</a> |
+                            <a href="<?php echo $this->url('utilisateur', array('action'=>'delete', 'id' => $utilisateur->getId_utilisateur()));?>">Delete</a>
+                        </td>
+                    </tr>
+                    </tbody>
+                <?php endforeach; ?>
+                </table>
+                <?php endif; ?>
+            </div>
+        </div>
+    </div>
+</div>

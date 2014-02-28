@@ -1,0 +1,15 @@
+<div class="modal-dialog">
+    <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" onClick="window.location.reload()" aria-hidden="true">&times;</button>
+            <h4 class="modal-title">Supprimer <?php echo $projet->getTitre_Projet(); ?> </h4>                
+        </div>       
+        <p class="col-sm-10">Voulez vraiment supprimer le projet: <?php echo $projet->getTitre_projet(); ?>?</p> <br/>
+        <form method="post" action="<?php echo $this->url('projet', array('action' => 'deleteProjet', 'idprojet' => $projet->getId_projet())); ?>">
+            <div class="modal-footer">
+                <input type="submit" class="btn btn-primary" value="Valider"/>
+                <button type="button" class="btn btn-default" onClick="window.location.reload()" data-dismiss="modal">Fermer</button>                
+            </div>            
+        </form>
+    </div>
+</div>

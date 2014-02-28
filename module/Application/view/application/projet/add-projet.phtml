@@ -1,0 +1,17 @@
+<?php
+
+$title = 'Ajouter un Projet';
+$this->headTitle($title);
+
+
+?>
+<h1><?php echo $this->escapeHtml($title); ?></h1>
+<form method="post">
+  
+  Titre: <input type="text" name="titre_projet"><br>
+  Description: <textarea name="description_projet"></textarea><br>
+  Début: <input type="date" name="date_debut_projet" ><br>
+  Fin: <input type="date" name="date_fin_projet"><br>
+  
+  <input type="submit" value="Valider">
+</form>
